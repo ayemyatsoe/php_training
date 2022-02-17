@@ -1,24 +1,65 @@
 <?php 
 
-if(isset($_POST['registerbtn'])) {
-	session_start(); 
+function checkStrongPassword($password){
+    $upperStatus= false;
+    $lowerStatus= false;
+    $numberStatus= false;
+    $specialStatus= false;
+    if(preg_match('/[A-Z]/',$password)){
+        $upperStatus = true;
+    }
+    if(preg_match('/[a-z]/',$password)){
+        $lowerStatus = true;
+    }
+    if(preg_match('/[0-9]/',$password)){
+        $numberStatus = true;
+    }
+    if(preg_match('/[!@#$%*&]/',$password)){
+        $specialStatus = true;
+    }
+    if($upperStatus && $lowerStatus && $numberStatus && $specialStatus){
+        return true;
+    }
+    else {
+       return false;
+    }
+}
+ if(isset($_POST['registerbtn'])) {
+	
 	$name = $_POST['name'];
 	$email= $_POST['email'];
 	$password = $_POST['psw'];
 	$psw_repeat= $_POST['psw-repeat'];
-	$_SESSION['name']=$name;
-	$_SESSION['email']=$email;
-	$_SESSION['psw']=$password;
-	$_SESSION['psw-repeat']=$psw_repeat;
-	echo  $_SESSION['name'];
+	
+    if(strlen($password) >= 6 && strlen($psw_repeat) >= 6){
+       if($password == $psw_repeat){
+        $status = checkStrongPassword($password);
+        if($status){
+            session_start(); 
+            $_SESSION['name']=$name;
+            $_SESSION['psw']=$password;
+            echo "login Success";
+        }
+        else {
+            echo "Your Password is not Strong Password eg A-Z and a-z and 0-9 ";
+        }
+       }
+       else {
+           echo "Password not same";
+       }
+    }
+    else {
+        echo "Password must not greater 6";
+    }
 }
+
 if(isset($_POST['login'])) {
     $uname = $_POST['uname'];
     $psw = $_POST['lpsw'];
-     
+    session_start();
     if($uname ==  $_SESSION['name'] and $psw ==  $_SESSION['psw'])
     {    
-        session_start();
+        
         echo "Logged in successfully";
     }
     else {

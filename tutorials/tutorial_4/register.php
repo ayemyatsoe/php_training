@@ -1,11 +1,4 @@
-<?php 
- session_start(); 
- $name = $_POST['name'];
- $email= $_POST['email'];
- $password = $_POST['psw'];
- $psw_repeat= $_POST['psw-repeat'];
- echo  $name ;
- ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -93,6 +86,5 @@ a {
     <p>Already have an account? <a href="login.php">Sign in</a>.</p>
   </div>
 </form>
-
 </body>
 </html>
