@@ -25,7 +25,6 @@ function checkStrongPassword($password){
     }
 }
  if(isset($_POST['registerbtn'])) {
-	
 	$name = $_POST['name'];
 	$email= $_POST['email'];
 	$password = $_POST['psw'];
