@@ -1,0 +1,6 @@
+{
+    "require": {
+        "chillerlan/php-qrcode": "^4.3",
+        "tecnickcom/tc-lib-barcode": "^1.17"
+    }
+}
