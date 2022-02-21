@@ -81,7 +81,6 @@ function parseWord($userDoc)
 } 
 
 $userDoc = "hellodocx.docx";
-
 $text = parseWord($userDoc);
 echo $text;
 

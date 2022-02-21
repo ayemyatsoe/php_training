@@ -11,7 +11,7 @@
 <body>
     <h3>File Store</h3>
     <form method="Post" enctype="multipart/form-data">
-        <input type="file" name="profile" accept="image/x-png, image/gif, image/jpeg"><br><br><br>
+        <input type="file" name="profile" accept="image/x-png, image/gif, image/jpeg"=><br><br><br>
         <input type="text" name="folder"><br><br><br>
         <input type="submit" name="btn" value="Save">
     </form>
@@ -22,7 +22,7 @@
             $imgName= $_FILES['profile']['name'];
             $temName= $_FILES['profile']['tmp_name'];
             $folder = $_POST['folder'];
-            $dirPath = 'C:/Apache24/htdocs/php_training/tutorials/tutorial_6/'.$folder;
+            $dirPath = ''.$folder;
             if(!is_dir($dirPath)){
                 mkdir($dirPath);
             }
