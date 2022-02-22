@@ -11,7 +11,6 @@ echo "<h1>PDF FILE</h1><br>";
   @readfile($file); 
   echo "<h1>EXCEL FILE</h1><br>";
 require 'vendor/autoload.php';
-
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
@@ -64,7 +63,7 @@ echo "<h1>Word FILE</h1><br>";
 function parseWord($userDoc) 
 {
     $fileHandle = fopen($userDoc, "r");
-    $line = @fread($fileHandle, filesize($userDoc));   
+    $line = fread($fileHandle, filesize($userDoc));
     $lines = explode(chr(0x0D),$line);
     $outtext = "";
     foreach($lines as $thisline)
