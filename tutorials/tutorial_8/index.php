@@ -1,9 +1,94 @@
 <?php include("db.php"); ?>
 
 <?php include('includes/header.php'); ?>
+<?php 
+	$db = mysqli_connect('localhost', 'root', 'root', 'db_crud');
+    if (mysqli_connect_errno()) {
+        echo "Failed to connect to MySQL: " . mysqli_connect_error();
+    }
+	$name = "";
+	$address = "";
+    $email = "";
+	$phone = "";
+    $password ="";
+    $confirm_password ="";
+    $education = "";
+    $id=0;
+    $update = false;
+    $name_error = $address_error =  $email_error= $phone_error= $password_error= $confirm_error= $education_error= "";
+    
+function checkStrongPassword($password){
+    $upperStatus= false;
+    $lowerStatus= false;
+    $numberStatus= false;
+    $specialStatus= false;
+    if(preg_match('/[A-Z]/',$password)){
+        $upperStatus = true;
+    }
+    if(preg_match('/[a-z]/',$password)){
+        $lowerStatus = true;
+    }
+    if(preg_match('/[0-9]/',$password)){
+        $numberStatus = true;
+    }
+    if(preg_match('/[!@#$%*&]/',$password)){
+        $specialStatus = true;
+    }
+    if($upperStatus && $lowerStatus && $numberStatus && $specialStatus){
+        return true;
+    }
+    else {
+       return false;
+    }
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+	if (isset($_POST['save'])) {
+		$name = trim($_POST['name']);
+        if (empty($name)) {
+            $name_error = " Name is required.";
+        } elseif  (!preg_match("/^[a-zA-Z ]*$/",$name)) {
+            $name_error = "Name is invalid.";
+        } else {
+            $name = $name;
+        }
+
+
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+		$confirm_password  = $_POST['confirm_password'];
+		$address = $_POST['address'];
+        $phone = $_POST['phone'];
+        $education = $_POST['education'];
+        if(!empty($name) && !empty($email) && !empty($password) && !empty($confirm_password) && !empty($address) && !empty($phone) && !empty($education)){
+            if(strlen($password) >= 6 && strlen($confirm_password) >= 6){
+                if($password == $confirm_password){
+                 $status = checkStrongPassword($password);
+                 if($status){
+                    mysqli_query($db, "INSERT INTO tb_crud (name, email,address,phone,education,password,confirm_password) VALUES ('$name', '$email', '$address', '$phone', '$education','$password','$confirm_password')"); 
+                    
+                 }
+                 else {
+                     echo "Your Password is not Strong Password eg A-Z and a-z and 0-9 ";
+                 }
+                }
+                else {
+                    echo "Password not same";
+                }
+             }
+             else {
+                 echo "Password must not greater 6";
+             }
+            
+        }
+        
+	}
+}
+    ?>
 <div class="container">
-    <form method="post" action="">
-        <div class="input-group"><label>Name</label><input type="text" name="name" value=""></div>
+    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+        <div class="input-group"><label>Name</label><input type="text" name="name" value=""> <span class="error">* <?php echo $name_error; ?> </span> </div>
         <div class="input-group"><label>Email</label><input type="email" name="email" value=""></div>
         <div class="input-group"><label>Password</label><input type="password" name="password" value=""></div>
         <div class="input-group"><label>Confirm_Password</label><input type="password" name="confirm_password" value=""></div>
@@ -50,77 +135,4 @@
         <?php } ?>
     </table>
 </div>
-<?php 
-	$db = mysqli_connect('localhost', 'root', 'root', 'db_crud');
-    if (mysqli_connect_errno()) {
-        echo "Failed to connect to MySQL: " . mysqli_connect_error();
-    }
-	$name = "";
-	$address = "";
-    $email = "";
-	$phone = "";
-    $password ="";
-    $confirm_password ="";
-    $education = "";
-    $id=0;
-    $update = false;
-    
-function checkStrongPassword($password){
-    $upperStatus= false;
-    $lowerStatus= false;
-    $numberStatus= false;
-    $specialStatus= false;
-    if(preg_match('/[A-Z]/',$password)){
-        $upperStatus = true;
-    }
-    if(preg_match('/[a-z]/',$password)){
-        $lowerStatus = true;
-    }
-    if(preg_match('/[0-9]/',$password)){
-        $numberStatus = true;
-    }
-    if(preg_match('/[!@#$%*&]/',$password)){
-        $specialStatus = true;
-    }
-    if($upperStatus && $lowerStatus && $numberStatus && $specialStatus){
-        return true;
-    }
-    else {
-       return false;
-    }
-}
-	if (isset($_POST['save'])) {
-		$name = $_POST['name'];
-        $email = $_POST['email'];
-        $password = $_POST['password'];
-		$confirm_password  = $_POST['confirm_password'];
-		$address = $_POST['address'];
-        $phone = $_POST['phone'];
-        $education = $_POST['education'];
-        if(!empty($name) && !empty($email) && !empty($password) && !empty($confirm_password) && !empty($address) && !empty($phone) && !empty($education)){
-            if(strlen($password) >= 6 && strlen($confirm_password) >= 6){
-                if($password == $confirm_password){
-                 $status = checkStrongPassword($password);
-                 if($status){
-                    mysqli_query($db, "INSERT INTO tb_crud (name, email,address,phone,education,password,confirm_password) VALUES ('$name', '$email', '$address', '$phone', '$education','$password','$confirm_password')"); 
-                    
-                 }
-                 else {
-                     echo "Your Password is not Strong Password eg A-Z and a-z and 0-9 ";
-                 }
-                }
-                else {
-                    echo "Password not same";
-                }
-             }
-             else {
-                 echo "Password must not greater 6";
-             }
-            
-        }
-        else {
-            echo "Need to Fill";
-        }
-	}
-    ?>
 <?php include('includes/footer.php'); ?>
