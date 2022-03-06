@@ -4,6 +4,7 @@ require_once("phpChart_Lite/conf.php");
     if (mysqli_connect_errno()) {
         echo "Failed to connect to MySQL: " . mysqli_connect_error();
     }
+    
     $results = mysqli_query($db, "SELECT phone FROM tb_crud");
     $age = array();
     while ($row = mysqli_fetch_assoc($results)) {
@@ -63,7 +64,7 @@ require_once("phpChart_Lite/conf.php");
 
 <body>
     <div id="piechart" style="width: 900px; height: 500px;"></div>
-    <h1>Age</h1>
+    <h1>Bar chart</h1>
     <div style="width:600px">
         <canvas id="mycanvas"></canvas>
     </div>
