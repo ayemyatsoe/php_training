@@ -10,6 +10,8 @@
     </div>
 
     <div class="col-md-4">
+        <a class="btn btn-warning" href="{{ route('export') }}">Export User Data</a>
+        <a class="btn btn-warning" href="{{ route('importExportView') }}">Import User Data</a>
         <div class="float-right">
             <a class="btn btn-outline-success" href="{{ route('student.create') }}"> Create New student</a>
         </div>
@@ -29,6 +31,7 @@
             <th>Name</th>
             <th>Email</th>
             <th>DOB</th>
+            <th>Major</th>
             <th>Address</th>
             <th>Phone</th>
             <th>Action</th>
@@ -42,6 +45,7 @@
             <td>{{ $student->name }}</td>
             <td>{{ $student->email }}</td>
             <td>{{ $student->dob }}</td>
+            <td>{{ $student->major->name }}</td>
             <td>{{ $student->address }}</td>
             <td>{{ $student->phone }}</td>
             <td>

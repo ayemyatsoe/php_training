@@ -26,3 +26,6 @@ Route::get('/', function () {
 
 
 Route::resource('student', 'StudentsController');
+Route::get('importExportView', 'StudentsController@importExportView')->name('importExportView');
+Route::get('export', 'StudentsController@export')->name('export');
+Route::post('import', 'StudentsController@import')->name('import');

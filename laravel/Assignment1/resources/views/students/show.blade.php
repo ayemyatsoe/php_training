@@ -23,6 +23,24 @@
     </div>
     <div class="col-md-12">
         <div class="form-group">
+            <strong>Email:</strong>
+            {{ $student->email }}
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            <strong>Dob:</strong>
+            {{ $student->dob }}
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            <strong>Address:</strong>
+            {{ $student->major->name }}
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
             <strong>Address:</strong>
             {{ $student->address }}
         </div>

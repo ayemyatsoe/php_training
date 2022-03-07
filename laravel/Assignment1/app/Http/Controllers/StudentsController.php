@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Students;
 use Illuminate\Http\Request;
 use App\Contracts\Services\StudentServiceInterface;
-
+use App\Http\Controllers\DB;
+use App\Exports\StudentsExport;
+use App\Imports\StudentsImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class StudentsController extends Controller
 {
@@ -48,11 +51,13 @@ class StudentsController extends Controller
     }
 
 
-    public function show(Students $students)
+    public function show(Students $student)
     {
         return view('students.show')->with([
-            'student' => $students
+            'student' => $student
         ]);
+        //$students = DB::table('Students')->where('id', 'student')->first();
+        dd($students);
     }
 
 
@@ -81,7 +86,22 @@ class StudentsController extends Controller
     public function destroy(Students $student)
     {
         $this->studentService->delete($student);
-        //return dd("hello");
         return redirect()->back()->with("success", "Student deleted successfully");
+    }
+
+    public function importExportView()
+    {
+       return view('students.import');
+    }
+    public function export()
+    {
+        return Excel::download(new StudentsExport, 'users.csv');
+    }
+
+    public function import()
+    {
+        Excel::import(new StudentsImport,request()->file('file'));
+
+        return back();
     }
 }
