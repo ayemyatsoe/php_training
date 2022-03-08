@@ -29,3 +29,6 @@ Route::resource('student', 'StudentsController');
 Route::get('importExportView', 'StudentsController@importExportView')->name('importExportView');
 Route::get('export', 'StudentsController@export')->name('export');
 Route::post('import', 'StudentsController@import')->name('import');
+Route::get('search', 'StudentsController@search')->name('search');
+Route::get('date', 'StudentsController@date')->name('date');
+Route::get('dateView', 'StudentsController@dateView');

@@ -9,7 +9,7 @@
         </div>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-6 offset-3 mb-5">
         <a class="btn btn-warning" href="{{ route('export') }}">Export User Data</a>
         <a class="btn btn-warning" href="{{ route('importExportView') }}">Import User Data</a>
         <div class="float-right">
@@ -17,7 +17,12 @@
         </div>
     </div>
 </div>
-
+<div class="col-md-8 mb-3">
+    <form action="{{ route('search') }}" method="GET">
+        <input type="text" name="search" placeholder="Search Name" required/>
+        <button type="submit">Search</button>
+      </form>
+</div>
 @if ($message = Session::get('success'))
 <div class="alert alert-success">
     <p>{{ $message }}</p>

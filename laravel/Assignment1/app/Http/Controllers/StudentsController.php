@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\Students;
 use Illuminate\Http\Request;
 use App\Contracts\Services\StudentServiceInterface;
-use App\Http\Controllers\DB;
 use App\Exports\StudentsExport;
 use App\Imports\StudentsImport;
 use Maatwebsite\Excel\Facades\Excel;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class StudentsController extends Controller
 {
@@ -103,5 +104,41 @@ class StudentsController extends Controller
         Excel::import(new StudentsImport,request()->file('file'));
 
         return back();
+    }
+    public function search(Request $request){
+
+        $search = $request->input('search');
+
+        $items = Students::query()
+                    ->where('name', 'LIKE', "%{$search}%")
+                    ->orWhere('email', 'LIKE', "%{$search}%")
+                    ->orWhere('phone', 'LIKE', "%{$search}%")
+                    ->orWhere('dob', 'LIKE', '%' . $search . '%')
+                    ->orWhere('address', 'LIKE', "%{$search}%")
+                    ->orWhere(function ($query) use ($search) {
+                        $query->whereHas('major', function ($q) use ($search) {
+                            $q->where('name', 'LIKE', '%' . $search . '%');
+                        });
+                    })->get();
+
+        return view('students.index', compact('items'));
+    }
+
+    public function date(Request $request)
+    {
+       
+        $start_date = Carbon::parse($request->start_date)
+        ->toDateTimeString();
+        $end_date = Carbon::parse($request->end_date)
+        ->toDateTimeString();
+        $items = Students::whereBetween('created_at',[$start_date,$end_date])->get();
+        dd($data->toArray());
+        //return User::whereBetween('created_at',[$start_date,$end_date])->get();
+
+    }
+    public function dateView()
+    {
+        return view('students.search');
+
     }
 }
