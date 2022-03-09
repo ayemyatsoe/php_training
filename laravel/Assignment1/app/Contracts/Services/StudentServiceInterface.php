@@ -14,4 +14,6 @@ interface StudentServiceInterface {
     public function create(Request $request);
 
     public function delete($student);
+
+    public function search(Request $request);
 }

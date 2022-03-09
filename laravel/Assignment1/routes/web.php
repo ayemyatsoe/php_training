@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentsController;
+use App\Http\Controllers\API\APIController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,3 +33,13 @@ Route::post('import', 'StudentsController@import')->name('import');
 Route::get('search', 'StudentsController@search')->name('search');
 Route::get('date', 'StudentsController@date')->name('date');
 Route::get('dateView', 'StudentsController@dateView');
+
+//Route::apiResource('api/studentAPI', 'API\StudentAPIController');
+
+//Route::prefix('student')->group(function () {
+//    Route::get('index','API\StudentController@index');
+//    Route::post('store','API\StudentController@store');
+//    Route::get('show/{id}','API\StudentController@show');
+//    Route::get('delete/{id}','API\StudentController@delete');
+//    Route::post('update','API\StudentController@update');
+//});

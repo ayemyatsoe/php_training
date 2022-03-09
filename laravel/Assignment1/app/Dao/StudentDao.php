@@ -34,4 +34,19 @@ class StudentDao implements StudentDaoInterface{
     public function delete($student){
         return $student->delete();
     }
+    public function search(Request $request) {
+        $search = $request->input('search');
+        $items = Students::query()
+                    ->where('name', 'LIKE', "%{$search}%")
+                    ->orWhere('email', 'LIKE', "%{$search}%")
+                    ->orWhere('phone', 'LIKE', "%{$search}%")
+                    ->orWhere('dob', 'LIKE', '%' . $search . '%')
+                    ->orWhere('address', 'LIKE', "%{$search}%")
+                    ->orWhere(function ($query) use ($search) {
+                        $query->whereHas('major', function ($q) use ($search) {
+                            $q->where('name', 'LIKE', '%' . $search . '%');
+                        });
+                    })->get();
+        return $items;
+    }
 }

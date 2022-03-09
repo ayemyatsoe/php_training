@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Students;
+use App\Majors;
 use Illuminate\Http\Request;
 use App\Contracts\Services\StudentServiceInterface;
 use App\Exports\StudentsExport;
@@ -10,6 +11,7 @@ use App\Imports\StudentsImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use App\Http\Resources\StudentResource;
 
 class StudentsController extends Controller
 {
@@ -22,9 +24,8 @@ class StudentsController extends Controller
     public function index()
     {
         $items = $this->studentService->getAll();
-
         return view('students.index', ['items' => $items]);
-
+        //return response([ 'items' => StudentResource::collection($items), 'message' => 'Retrieved successfully'], 200);
     }
 
 
@@ -47,18 +48,19 @@ class StudentsController extends Controller
 
         ]);
         $this->studentService->create($request);
-        return redirect()->route('student.index')->with('success','Student created successfully.');
+        //$response= response()->json(['code'=>200, 'message'=>'Post Created successfully','data' => $post], 200);
+        return redirect()->route('student.index')->with(['success'=>'Student created successfully.']);
 
     }
 
 
     public function show(Students $student)
     {
+
+        $students = DB::table('Students')->where('id', 'student')->first();
         return view('students.show')->with([
             'student' => $student
         ]);
-        //$students = DB::table('Students')->where('id', 'student')->first();
-        dd($students);
     }
 
 
@@ -106,27 +108,13 @@ class StudentsController extends Controller
         return back();
     }
     public function search(Request $request){
-
-        $search = $request->input('search');
-
-        $items = Students::query()
-                    ->where('name', 'LIKE', "%{$search}%")
-                    ->orWhere('email', 'LIKE', "%{$search}%")
-                    ->orWhere('phone', 'LIKE', "%{$search}%")
-                    ->orWhere('dob', 'LIKE', '%' . $search . '%')
-                    ->orWhere('address', 'LIKE', "%{$search}%")
-                    ->orWhere(function ($query) use ($search) {
-                        $query->whereHas('major', function ($q) use ($search) {
-                            $q->where('name', 'LIKE', '%' . $search . '%');
-                        });
-                    })->get();
-
-        return view('students.index', compact('items'));
+        $items = $this->studentService->search($request);
+        return view('students.index',['items' => $items]);
     }
 
     public function date(Request $request)
     {
-       
+
         $start_date = Carbon::parse($request->start_date)
         ->toDateTimeString();
         $end_date = Carbon::parse($request->end_date)

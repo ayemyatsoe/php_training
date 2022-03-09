@@ -14,7 +14,6 @@ class StudentService implements StudentServiceInterface {
     }
 
     public function getAll(){
-
         return $this->studentDao->getAll();
     }
 
@@ -35,5 +34,8 @@ class StudentService implements StudentServiceInterface {
     }
     public function delete($student){
         return $this->studentDao->delete($student);
+    }
+    public function search(Request $request) {
+        return $this->studentDao->search($request);
     }
 }
