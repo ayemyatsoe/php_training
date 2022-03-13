@@ -29,6 +29,12 @@
 </div>
 @endif
 
+ @if(session()->has('create-message'))
+              <div class="alert alert-success">
+                  {{ session()->get('create-message') }}
+              </div>
+@endif
+
 <table class="table">
     <thead class="thead-dark">
         <tr>

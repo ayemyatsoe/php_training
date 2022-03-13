@@ -24,3 +24,12 @@ Route::prefix('student')->group(function () {
     Route::get('delete/{id}','API\StudentAPIController@delete');
     Route::post('update/{id}','API\StudentAPIController@update');
 });
+
+
+Route::prefix('ajax/students')->group(function () {
+    Route::get('index','StudentAjaxController@index');
+    Route::post('store','StudentAjaxController@store');
+    Route::get('show/{id}','StudentAjaxController@show');
+    Route::get('delete/{id}','StudentAjaxController@delete');
+    Route::post('update','StudentAjaxController@update');
+});

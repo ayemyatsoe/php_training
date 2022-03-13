@@ -12,7 +12,9 @@ use Maatwebsite\Excel\Facades\Excel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Http\Resources\StudentResource;
-
+use App\Mail\MyTestMail;
+use App\Mail\sendDeleteMail;
+use Mail;
 class StudentsController extends Controller
 {
     private $studentService;
@@ -32,6 +34,7 @@ class StudentsController extends Controller
     public function create()
     {
         $majors = $this->studentService->getMajor();
+        //$majors =Majors::orderBy("name")->get()->pluck("name", "id");
         return view('students.create', ['majors' => $majors]);
     }
 
@@ -48,8 +51,18 @@ class StudentsController extends Controller
 
         ]);
         $this->studentService->create($request);
-        //$response= response()->json(['code'=>200, 'message'=>'Post Created successfully','data' => $post], 200);
-        return redirect()->route('student.index')->with(['success'=>'Student created successfully.']);
+
+        $details = [
+            "name" => $request->name,
+            "email" => $request->email,
+            "dob" => $request->dob,
+            "address" => $request->address,
+        ];
+
+        Mail::to($request->email)->send(new MyTestMail($details));
+
+        return redirect()->route('student.index')->with(['success'=>'Student created successfully.','create-message'=>'Student created successfully.']);
+
 
     }
 
@@ -89,6 +102,13 @@ class StudentsController extends Controller
     public function destroy(Students $student)
     {
         $this->studentService->delete($student);
+        $details = [
+            "name" => $student->name,
+            "message" => "Your information deleted",    
+        ];
+
+        Mail::to( $student->email)->send(new sendDeleteMail($details));
+
         return redirect()->back()->with("success", "Student deleted successfully");
     }
 

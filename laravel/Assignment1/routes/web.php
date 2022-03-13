@@ -35,7 +35,6 @@ Route::get('date', 'StudentsController@date')->name('date');
 Route::get('dateView', 'StudentsController@dateView');
 
 //Route::apiResource('api/studentAPI', 'API\StudentAPIController');
-
 //Route::prefix('student')->group(function () {
 //    Route::get('index','API\StudentController@index');
 //    Route::post('store','API\StudentController@store');
@@ -43,3 +42,16 @@ Route::get('dateView', 'StudentsController@dateView');
 //    Route::get('delete/{id}','API\StudentController@delete');
 //    Route::post('update','API\StudentController@update');
 //});
+//Route::prefix('ajax/students')->group(function () {
+//    Route::get('index','StudentAjaxController@index');
+//    Route::post('store','StudentAjaxController@store');
+//    Route::get('show/{id}','StudentAjaxController@show');
+//    Route::get('delete/{id}','StudentAjaxController@delete');
+//    Route::post('update','StudentAjaxController@update');
+//});
+Route::resource('ajax/majors', 'MajorsController');
+Route::resource('ajax/students', 'StudentAjaxController');
+
+Route::get("ajax/studentsData", function(){
+    return view("ajax.students");
+});

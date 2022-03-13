@@ -4,17 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Majors;
 use Illuminate\Http\Request;
+use Response;
 
 class MajorsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $majors = Majors::orderBy("name")->get();
+        return Response::json(
+            [
+                'status'=>200,
+                'message'=>'Get majors',
+                'data'=>$majors
+            ]
+            );
     }
 
     /**
